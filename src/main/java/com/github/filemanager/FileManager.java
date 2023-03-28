@@ -675,39 +675,53 @@ public class FileManager {
         boolean created = to.createNewFile();
 
         if (created) {
+            JProgressBar progressBa = new JProgressBar(0, 100);
+        JFrame fram = new JFrame();
+        fram.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        fram.getContentPane().add(progressBa);
+        fram.setSize(400, 200);
+        progressBa.setSize(300, 75);
+
+        fram.setLocationRelativeTo(null); // Center the frame on the screen
+        fram.setUndecorated(true);
+        fram.pack();
+        fram.setVisible(true);
+        FileCopyWithProgressBar copyTask = new FileCopyWithProgressBar(from, to, progressBa,fram);
+        copyTask.execute();
+        // fram.dispose();
             // FileChannel fromChannel = null;
             // FileChannel toChannel = null;
 
-            InputStream input = null;
-            OutputStream output = null;
-            final JProgressBar progressBar=new JProgressBar(0,100);
-            try {
-                input = new FileInputStream(from);
-                output = new FileOutputStream(to);
-                byte[] buffer = new byte[1024];
-                long fileSize = from.length();
-                long totalBytesRead = 0;
-                int bytesRead = 0;
-                while ((bytesRead = input.read(buffer)) > 0) {
-                    output.write(buffer, 0, bytesRead);
-                    totalBytesRead += bytesRead;
-                    final int progress = (int) ((totalBytesRead * 100) / fileSize);
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            progressBar.setValue(progress);
-                        }
-                    });
-                }
+            // InputStream input = null;
+            // OutputStream output = null;
+            // final JProgressBar progressBar=new JProgressBar(0,100);
+            // try {
+            //     input = new FileInputStream(from);
+            //     output = new FileOutputStream(to);
+            //     byte[] buffer = new byte[1024];
+            //     long fileSize = from.length();
+            //     long totalBytesRead = 0;
+            //     int bytesRead = 0;
+            //     while ((bytesRead = input.read(buffer)) > 0) {
+            //         output.write(buffer, 0, bytesRead);
+            //         totalBytesRead += bytesRead;
+            //         final int progress = (int) ((totalBytesRead * 100) / fileSize);
+            //         SwingUtilities.invokeLater(new Runnable() {
+            //             public void run() {
+            //                 progressBar.setValue(progress);
+            //             }
+            //         });
+            //     }
 
-                // int length;
-                // while ((length = is.read(buffer)) > 0) {
-                //     os.write(buffer, 0, length);
-                // }
-            } finally {
-                input.close();
-                output.close();
-                JOptionPane.showMessageDialog(null, "File Copied Successfully");
-            }
+            //     // int length;
+            //     // while ((length = is.read(buffer)) > 0) {
+            //     //     os.write(buffer, 0, length);
+            //     // }
+            // } finally {
+            //     input.close();
+            //     output.close();
+            //     JOptionPane.showMessageDialog(null, "File Copied Successfully");
+            // }
 
             // try {
             // fromChannel = new FileInputStream(from).getChannel();
